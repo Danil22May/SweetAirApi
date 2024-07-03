@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Index CRUD</title>
+</head>
+<body>
+    <h1>Air Quality Index CRUD</h1>
+    <div id="aqi-data"></div>
+    <div id="controls">
+        <input type="text" id="city" placeholder="City">
+        <input type="text" id="aqi" placeholder="AQI">
+        <input type="text" id="dominantpol" placeholder="Dominant Pollutant">
+        <button onclick="createAQIData()">Create</button>
+        <button onclick="fetchAQIData()">Fetch AQI Data</button>
+    </div>
+    <script>
+        const baseURL = 'http://localhost:3000/api/aqi';
+
+        async function fetchAQIData() {
+            try {
+                const response = await fetch(baseURL);
+                const data = await response.json();
+                displayAQIData(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayAQIData(data) {
+            const aqiDiv = document.getElementById('aqi-data');
+            aqiDiv.innerHTML = data.map(item => `
+                <div>
+                    <h2>City: ${item.city}</h2>
+                    <p>AQI: ${item.aqi}</p>
+                    <p>Dominant Pollutant: ${item.dominantpol}</p>
+                    <button onclick="updateAQIData('${item.city}')">Update</button>
+                    <button onclick="deleteAQIData('${item.city}')">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        async function createAQIData() {
+            const city = document.getElementById('city').value;
+            const aqi = document.getElementById('aqi').value;
+            const dominantpol = document.getElementById('dominantpol').value;
+
+            try {
+                const response = await fetch(baseURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ city, aqi, dominantpol })
+                });
+                if (response.ok) {
+                    fetchAQIData();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function updateAQIData(city) {
+            const aqi = prompt('Enter new AQI:');
+            const dominantpol = prompt('Enter new Dominant Pollutant:');
+
+            try {
+                const response = await fetch(`${baseURL}/${city}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ aqi, dominantpol })
+                });
+                if (response.ok) {
+                    fetchAQIData();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteAQIData(city) {
+            try {
+                const response = await fetch(`${baseURL}/${city}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    fetchAQIData();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        fetchAQIData();
+    </script>
+</body>
+</html>
