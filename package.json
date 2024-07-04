@@ -1,4 +1,12 @@
 {
+  "name": "sweetAir",
+  "version": "1.0.0",
+  "description": "Backend API using Node.js, Express, and MySQL",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha tests/**/*.mjs"
+  },
   "dependencies": {
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
@@ -6,5 +14,11 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mysql2": "^3.10.2"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
+    "mocha": "^10.6.0",
+    "supertest": "^7.0.0"
   }
 }

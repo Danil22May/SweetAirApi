@@ -13,7 +13,19 @@ exports.createComment = (req, res) => {
 };
 
 exports.getComments = (req, res) => {
-    db.query('SELECT * FROM comments', (err, results) => {
+    db.query('SELECT * FROM Comments', (err, results) => {
+        if (err) {
+            console.error('Error fetching comments:', err);
+            return res.status(500).send('Error fetching comments');
+        }
+        res.json(results);
+    });
+};
+
+exports.getCommentByAuthor = (req, res) => {
+    const { author } = req.params;
+    db.query('SELECT * FROM Comments WHERE author = ? LIMIT 1', [author], (err, results) => {
+
         if (err) {
             console.error('Error fetching comments:', err);
             return res.status(500).send('Error fetching comments');
@@ -26,7 +38,7 @@ exports.updateComment = (req, res) => {
     const { id } = req.params;
     const { author, text } = req.body;
 
-    db.query('UPDATE comments SET author = ?, text = ? WHERE id = ?', [author, text, id], (err, result) => {
+    db.query('UPDATE Comments SET author = ?, text = ? WHERE id = ?', [author, text, id], (err, result) => {
         if (err) {
             console.error('Error updating comment:', err);
             return res.status(500).send('Error updating comment');
@@ -38,7 +50,7 @@ exports.updateComment = (req, res) => {
 exports.deleteComment = (req, res) => {
     const { id } = req.params;
 
-    db.query('DELETE FROM comments WHERE id = ?', [id], (err, result) => {
+    db.query('DELETE FROM Comments WHERE id = ?', [id], (err, result) => {
         if (err) {
             console.error('Error deleting comment:', err);
             return res.status(500).send('Error deleting comment');
