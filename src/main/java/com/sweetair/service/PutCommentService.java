@@ -18,7 +18,7 @@ public class PutCommentService {
     public Comments updateComments(Comments request, int id) {
         return iCommentsRepository.findById(id).map(comment -> {
             Optional.ofNullable(request.getComment()).filter(value -> !Strings.isEmpty(value)).ifPresent(value -> comment.setComment(value));
-            Optional.ofNullable(request.getAuthor()).filter(value -> !Strings.isEmpty(value)).ifPresent(value -> comment.setComment(value));
+            Optional.ofNullable(request.getAuthor()).filter(value -> !Strings.isEmpty(value)).ifPresent(value -> comment.setAuthor(value));
             return comment;
         }).orElse(null);
     }

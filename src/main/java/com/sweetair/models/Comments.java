@@ -7,7 +7,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table
+@Table(name = "Comments")
 @Getter
 @Setter
 @NoArgsConstructor

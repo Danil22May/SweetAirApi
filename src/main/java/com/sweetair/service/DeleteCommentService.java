@@ -10,10 +10,6 @@ public class DeleteCommentService {
 
     private final ICommentsRepository iCommentsRepository;
 
-    public void deleteAllComments() {
-        iCommentsRepository.deleteAll();
-    }
-
     public void deleteCommentsById(int id) {
         iCommentsRepository.deleteById(id);
     }
