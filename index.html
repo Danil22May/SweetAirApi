@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Air Quality Index CRUD</title>
 </head>
 <body>
@@ -48,19 +49,55 @@
 
             try {
                 const response = await fetch(baseURL, {
+=======
+    <title>Buscar Calidad del Aire</title>
+</head>
+<body>
+    <h1>Buscar Calidad del Aire</h1>
+    <div id="search">
+        <input type="text" id="city" placeholder="Ingresa una ciudad">
+        <button onclick="fetchCityData()">Buscar y Guardar</button>
+    </div>
+    <div id="result"></div>
+    <div id="resultCity"></div>
+    <div id="resultCont"></div>
+    <script>
+        async function fetchCityData() {
+            const city = document.getElementById('city').value;
+            try {
+                const response = await fetch('http://localhost:3000/api/fetch-city', {
+>>>>>>> main
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
+<<<<<<< HEAD
                     body: JSON.stringify({ city, aqi, dominantpol })
                 });
                 if (response.ok) {
                     fetchAQIData();
                 }
+=======
+                    body: JSON.stringify({ city })
+                });
+                const data = await response.text();
+                document.getElementById('result').innerText = data;
+                
+               // document.getElementById('resultCity').innerText = data;
+
+               // resultCity.innerHTML = `
+               // <p>Data inserted successfully</p>
+               // <p><strong>City:</strong> ${data.city}</p>
+               // <p><strong>Dominant Pollutant:</strong> ${data.dominentpol}</p>
+               //  `;
+
+
+>>>>>>> main
             } catch (error) {
                 console.error('Error:', error);
             }
         }
+<<<<<<< HEAD
 
         async function updateAQIData(city) {
             const aqi = prompt('Enter new AQI:');
@@ -96,6 +133,8 @@
         }
 
         fetchAQIData();
+=======
+>>>>>>> main
     </script>
 </body>
 </html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Locations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top; /* Align text at the top */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            padding: 5px 10px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            white-space: pre-wrap; /* Enable line wrapping for preformatted text */
+            word-wrap: break-word; /* Prevent long words from breaking the layout */
+        }
+
+        #search {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CRUD Locations</h1>
+    <div id="search">
+        <input type="text" id="searchName" placeholder="Buscar por nombre">
+        <button onclick="searchLocation()">Buscar</button>
+    </div>
+    <div id="locations"></div>
+    <script>
+        async function fetchLocations() {
+            try {
+                const response = await fetch('http://localhost:3000/api/locations');
+                const data = await response.json();
+                displayLocations(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function searchLocation() {
+            const name = document.getElementById('searchName').value;
+            try {
+                const response = await fetch(`http://localhost:3000/api/locations?name=${name}`);
+                const data = await response.json();
+                displayLocations(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayLocations(data) {
+            const locationsDiv = document.getElementById('locations');
+            if (data.length === 0) {
+                locationsDiv.innerHTML = '<p>No data available.</p>';
+                return;
+            }
+            locationsDiv.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>City</th>
+                            <th>Info</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(item => `
+                            <tr>
+                                <td>${item.id}</td>
+                                <td>${item.name}</td>
+                                <td><pre>${JSON.stringify(item.info, null, 2)}</pre></td>
+                                <td>
+                                    <button onclick="updateLocation(${item.id})">Update</button>
+                                    <button onclick="deleteLocation(${item.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        async function updateLocation(id) {
+            const name = prompt('Enter new name:');
+            const info = prompt('Enter new info (in JSON format):');
+            try {
+                const response = await fetch(`http://localhost:3000/api/locations/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, info })
+                });
+                if (response.ok) {
+                    fetchLocations();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteLocation(id) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/locations/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    fetchLocations();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        fetchLocations();
+    </script>
+</body>
+</html>
