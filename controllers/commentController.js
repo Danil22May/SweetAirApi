@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 exports.createComment = (req, res) => {
-    const { author, text } = req.body;
+    const { author, comment } = req.body;
 
-    db.query('INSERT INTO comments (author, text) VALUES (?, ?)', [author, text], (err, result) => {
+    db.query('INSERT INTO Comments (author, comment) VALUES (?, ?)', [author, comment], (err, result) => {
         if (err) {
             console.error('Error creating comment:', err);
             return res.status(500).send('Error creating comment');
@@ -38,7 +38,7 @@ exports.updateComment = (req, res) => {
     const { id } = req.params;
     const { author, text } = req.body;
 
-    db.query('UPDATE Comments SET author = ?, text = ? WHERE id = ?', [author, text, id], (err, result) => {
+    db.query('UPDATE Comments SET author = ?, comment = ? WHERE id = ?', [author, text, id], (err, result) => {
         if (err) {
             console.error('Error updating comment:', err);
             return res.status(500).send('Error updating comment');
