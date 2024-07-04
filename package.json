@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "sweetairapi_xxx",
+  "description": "",
+  "version": "1.0.0",
+  "main": "script2.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -3,14 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Quality Index CRUD</title>
+    <title>Buscar Calidad del Aire</title>
 </head>
 <body>
-    <h1>Air Quality Index CRUD</h1>
-    <div id="aqi-data"></div>
-    <div id="controls">
-        <button onclick="fetchAQIData()">Fetch AQI Data</button>
+    <h1>Buscar Calidad del Aire</h1>
+    <div id="search">
+        <input type="text" id="city" placeholder="Ingresa una ciudad">
+        <button onclick="fetchCityData()">Buscar y Guardar</button>
     </div>
-    <script src="script.js"></script>
+    <div id="result"></div>
+    <div id="resultCity"></div>
+    <div id="resultCont"></div>
+    <script>
+        async function fetchCityData() {
+            const city = document.getElementById('city').value;
+            try {
+                const response = await fetch('http://localhost:3000/api/fetch-city', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ city })
+                });
+                const data = await response.text();
+                document.getElementById('result').innerText = data;
+                
+               // document.getElementById('resultCity').innerText = data;
+
+               // resultCity.innerHTML = `
+               // <p>Data inserted successfully</p>
+               // <p><strong>City:</strong> ${data.city}</p>
+               // <p><strong>Dominant Pollutant:</strong> ${data.dominentpol}</p>
+               //  `;
+
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
 </body>
 </html>
