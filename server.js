@@ -13,17 +13,6 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-=======
-/* const db = mysql.createConnection({
-    host: 'your-database-server',       // Reemplaza con tu servidor de base de datos
-    user: 'your-database-username',     // Reemplaza con tu usuario de base de datos
-    password: 'your-database-password', // Reemplaza con tu contraseña de base de datos
-    database: 'your-database-name',     // Reemplaza con el nombre de tu base de datos
-    port: 3306                         // Reemplaza con tu puerto de base de datos si es diferente
-});
- */
->>>>>>> main
 // Configura la conexión a MySQL
 const db = mysql.createConnection({
     host: 'sql7.freemysqlhosting.net',       // Reemplaza con tu servidor de base de datos
@@ -116,7 +105,6 @@ app.post('/api/fetch-city', async (req, res) => {
             return res.status(400).send('Error fetching data from API');
         }
 
-        // db.query('INSERT INTO locations (name, info) VALUES (?, ?)', [city, JSON.stringify(data)], (err, result) => {
         db.query('INSERT INTO Location (name, info) VALUES (?, ?)', [city, JSON.stringify(data)], (err, result) => {    
             if (err) {
                 console.error('Error inserting data:', err);
@@ -131,15 +119,6 @@ app.post('/api/fetch-city', async (req, res) => {
 });
 
 // CRUD endpoints for the locations table
-/* app.get('/api/locations', (req, res) => {
-      db.query('SELECT * FROM Location', (err, results) => {
-        if (err) {
-            console.error('Error fetching data:', err);
-            return res.status(500).send(err);
-        }
-        res.json(results);
-    });
-}); */
 // Ruta para obtener todas las ubicaciones o buscar por nombre
 app.get('/api/locations', (req, res) => {
     const { name } = req.query;
