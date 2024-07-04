@@ -18,7 +18,7 @@ table {
 th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #1f1c1c;
+    border-bottom: 1px solid #ddd;
     vertical-align: top; /* Align text at the top */
 }
 
@@ -27,7 +27,7 @@ th {
 }
 
 tr:hover {
-    background-color: #647ad3;
+    background-color: #f1f1f1;
 }
 
 button {
